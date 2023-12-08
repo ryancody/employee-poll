@@ -46,11 +46,11 @@ export const pollsSlice = createSlice({
         },
         voteA: (state, action) => {
             const poll = state.polls.find(poll => poll.id === action.payload.id);
-            poll.votesA.push(action.payload.user);
+            poll.votesA.push({  option: poll.optionA, user: action.payload.user, timestamp: Date.now() });
         },
         voteB: (state, action) => {
             const poll = state.polls.find(poll => poll.id === action.payload.id);
-            poll.votesB.push(action.payload.user);
+            poll.votesB.push({ option: poll.optionB, user: action.payload.user, timestamp: Date.now() });
         }
     },
 });

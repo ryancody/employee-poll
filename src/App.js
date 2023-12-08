@@ -11,7 +11,6 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
         <Users />
         {
           currentUser &&
@@ -21,7 +20,6 @@ function App() {
           currentUser &&
             <NewPoll />
         }
-      </header>
     </div>
   );
 }

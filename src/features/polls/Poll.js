@@ -20,16 +20,29 @@ export function Poll(props) {
   return (
     <div>
       <img src={author.icon} alt={author.name} />
-      <p>Would you rather?</p>
+      <p>Would you rather...</p>
       {allowVoting ? (
         <div>
-          <button onClick={() => dispatch(voteA(payload))}>{poll.optionA}</button>
-          <button onClick={() => dispatch(voteB(payload))}>{poll.optionB}</button>
+          <div>
+            <button className='btn' onClick={() => dispatch(voteA(payload))}>
+              {poll.optionA}
+            </button>
+          </div>
+          <div>or</div>
+          <div>
+            <button className='btn' onClick={() => dispatch(voteB(payload))}>
+              {poll.optionB}
+            </button>
+          </div>
         </div>
       ) : (
         <div>
-          <p>{poll.optionA} {poll.votesA.length}</p>
-          <p>{poll.optionB} {poll.votesB.length}</p>
+          <p>
+            {poll.optionA} {poll.votesA.length}
+          </p>
+          <p>
+            {poll.optionB} {poll.votesB.length}
+          </p>
         </div>
       )}
       <p>by {author.name}</p>

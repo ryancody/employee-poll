@@ -3,19 +3,27 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     polls: [{
         id: crypto.randomUUID(),
-        optionA: 'foo',
-        optionB: 'bar',
+        optionA: 'be the supreme leader of the universe',
+        optionB: 'be the most handsome man in the universe',
         votesA: [],
         votesB: [],
         authorName: 'Zapp Brannigan'
     },
     {
         id: crypto.randomUUID(),
-        optionA: 'baz',
-        optionB: 'qux',
+        optionA: 'rob a bank',
+        optionB: 'bite my shiny metal ass',
         votesA: [],
         votesB: [],
-        authorName: 'Kif Kroker'
+        authorName: 'Bender Bending Rodriguez'
+    },
+    {
+        id: crypto.randomUUID(),
+        optionA: 'be a limbo gold medalist',
+        optionB: 'be a bureaucrat',
+        votesA: [],
+        votesB: [],
+        authorName: 'Hermes Conrad'
     }]
 };
 

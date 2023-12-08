@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPolls, add } from './pollsSlice';
+import { add } from './pollsSlice';
 import { selectCurrentUser } from '../users/usersSlice';
 
 export function NewPoll() {
@@ -27,14 +27,15 @@ export function NewPoll() {
         <div>
             <h5>New Poll</h5>
             <img src={currentUser.icon} alt={currentUser.name} />
-            <p>Would you rather?</p>
+            <p>Would you rather...</p>
             <div>
                 <input type="text" placeholder="Enter Option A" onChange={updateA} />
             </div>
+            <div>or</div>
             <div>
                 <input type="text" placeholder="Enter Option B" onChange={updateB} />
             </div>
-            <button onClick={() => dispatch(add(payload)) }>Submit</button>
+            <button className='btn' onClick={() => dispatch(add(payload)) }>Submit</button>
         </div>
     );
 }

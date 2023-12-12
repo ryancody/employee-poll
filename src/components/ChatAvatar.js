@@ -1,7 +1,14 @@
 import React from 'react';
 
 export function ChatAvatar(props) {
-  const user = props.user;
+  let user = props.user;
+
+  if(!user) {
+    user = {
+      name: 'not logged in',
+      icon: '👤'
+    }
+  }
 
   return (
     <div className='chat-image avatar'>

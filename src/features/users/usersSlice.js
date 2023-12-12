@@ -32,7 +32,8 @@ const initialState = {
         name: 'Hypno Toad',
         icon: 'toad.png'
     }],
-    currentUser: null
+    currentUser: null,
+    from: '/'
 };
 
 export const usersSlice = createSlice({
@@ -48,19 +49,18 @@ export const usersSlice = createSlice({
         setCurrentUser: (state, action) => {
             state.currentUser = action.payload;
         },
-        removeCurrentUser: (state) => {
-            state.currentUser = null;
-        },
-        getUserByName: (state, action) => {
-            return state.users.find(user => user.name === action.payload.name);
+        setFrom: (state, action) => {
+            state.from = action.payload;
+            console.log('state', state )
         }
     },
 });
 
 
-export const { add, remove, setCurrentUser, removeCurrentUser, getUserByName } = usersSlice.actions;
+export const { add, remove, setCurrentUser, setFrom } = usersSlice.actions;
 
 export const selectUsers = state => state.users.users;
 export const selectCurrentUser = state => state.users.currentUser;
+export const selectFrom = state => state.users.from;
 
 export default usersSlice.reducer;

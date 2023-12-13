@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPolls } from '../features/polls/pollsSlice';
+import { selectQuestions } from '../features/questions/questionsSlice';
 import {
   selectCurrentUser,
   setCurrentUser,
   setFrom,
 } from '../features/users/usersSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { filterMine, filterUnanswered } from '../utils/pollFilter';
+import { filterMine, filterUnanswered } from '../utils/questionFilter';
 
 export function Header() {
   const handleLogout = (e) => {
@@ -27,11 +27,11 @@ export function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const polls = useSelector(selectPolls);
+  const questions = Object.values(useSelector(selectQuestions));
   const user = useSelector(selectCurrentUser);
-  const unanswered = filterUnanswered(polls, user.name).length;
-  const mine = filterMine(polls, user.name).length;
-  const all = polls.length;
+  const unanswered = filterUnanswered(questions, user.id).length;
+  const mine = filterMine(questions, user.id).length;
+  const all = questions.length;
 
   return (
     <div className='navbar bg-base-100'>
@@ -116,7 +116,7 @@ export function Header() {
           >
             {user ? (
               <div className='w-10 rounded-full'>
-                <img alt={user.name} src={user.icon} />
+                <img alt={user.name} src={`/${user.avatarURL}.png`} />
               </div>
             ) : (
               <div className='w-10 rounded-full text-xl'>👤</div>

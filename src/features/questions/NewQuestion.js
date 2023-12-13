@@ -1,37 +1,31 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { add } from './pollsSlice';
 import { selectCurrentUser } from '../users/usersSlice';
 import { ChatAvatar } from '../../components/ChatAvatar';
 import { useNavigate } from 'react-router-dom';
+import { handleAddQuestion } from '../../utils/api';
 
 export function NewPoll() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const navigate = useNavigate();
-  const payload = {
-    user: currentUser,
-    optionA: '',
-    optionB: ''
-  };
+  let optionOneText = '';
+  let optionTwoText = '';
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(add(payload));
+    dispatch(handleAddQuestion(optionOneText, optionTwoText, currentUser.id));
     navigate('/');
   }
 
   const updateA = (e) => {
-    payload.optionA = e.target.value;
+    optionOneText = e.target.value;
   };
 
   const updateB = (e) => {
-    payload.optionB = e.target.value;
+    optionTwoText = e.target.value;
   };
 
-  console.log('currentUser', currentUser);
-
-  // show results
   return (
     <div className='chat chat-start'>
       <ChatAvatar user={currentUser} />
@@ -48,7 +42,7 @@ export function NewPoll() {
         <div>
           <input type='text' placeholder='Enter Option B' className="input w-full max-w-xs text-black" onChange={updateB} />
         </div>
-        <button className='btn' onClick={() => handleSubmit(payload)}>
+        <button className='btn' onClick={(e) => handleSubmit(e)}>
           Submit
         </button>
       </div>

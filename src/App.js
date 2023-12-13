@@ -1,44 +1,65 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Polls } from './features/polls/Polls';
-import { selectCurrentUser } from './features/users/usersSlice';
+import { Questions } from './features/questions/Questions';
+import { selectCurrentUser, selectUsers } from './features/users/usersSlice';
 import './App.css';
-import { NewPoll } from './features/polls/NewPoll';
+import { NewPoll } from './features/questions/NewQuestion';
 import { Login } from './components/Login';
 import { Route, Routes } from 'react-router-dom';
 import { Header } from './components/Header';
-import { selectPolls } from './features/polls/pollsSlice';
-import { filterMine, filterUnanswered } from './utils/pollFilter';
+import { selectQuestions } from './features/questions/questionsSlice';
+import { filterMine, filterUnanswered } from './utils/questionFilter';
 import { NotFound } from './components/NotFound';
 import { Leaderboard } from './components/Leaderboard';
-import { Poll } from './features/polls/Poll';
+import { useDispatch } from 'react-redux';
+import { getInitialData } from './utils/api';
+import { setUsers } from './features/users/usersSlice';
+import { setQuestions } from './features/questions/questionsSlice';
+import { RoutedQuestion } from './features/questions/RoutedQuestion';
 
-function App() {
+function App() {  
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  const polls = useSelector(selectPolls);
+  const users = useSelector(selectUsers);
+  let questions = useSelector(selectQuestions);
+
+  useEffect(() => {
+    getInitialData().then(({ users, questions }) => {
+      dispatch(setUsers(users));
+      dispatch(setQuestions(questions));
+    });
+  }, [dispatch]);
+
+  if(!users)
+    return <div>Loading...</div>
 
   // if current user is null, show login screen
   if (!currentUser) {
     return <Login />;
   }
 
+  const myQuestions = filterMine(questions, currentUser.id);
+  const unansweredQuestions = filterUnanswered(questions, currentUser.id);
+
   return (
     <>
       <Header />
       <Routes>
-        <Route path='/' element={<Polls polls={polls} />} />
+        <Route path='/' element={<Questions questions={questions} />} />
         <Route
           path='/mine'
-          element={<Polls polls={filterMine(polls, currentUser.name)} />}
+          element={<Questions questions={myQuestions} />}
         />
         <Route
           path='/unanswered'
-          element={<Polls polls={filterUnanswered(polls, currentUser.name)} />}
+          element={
+            <Questions questions={unansweredQuestions} />
+          }
         />
         <Route path='/add' element={<NewPoll />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/leaderboard' element={<Leaderboard />} />
-        <Route path='/questions/1' element={<Poll />} />
+        <Route path='/leaderboard' element={<Leaderboard users={users} />} />
+        <Route path='/questions/:questionId' element={<RoutedQuestion />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

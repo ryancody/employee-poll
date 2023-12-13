@@ -11,7 +11,7 @@ export function Users() {
     return (
       <div>
         <p>Current User</p>
-        <img src={currentUser.icon} alt={currentUser.name} />
+        <img src={`/${currentUser.avatarURL}.png`} alt={currentUser.name} />
         <h5>{currentUser.name}</h5>
         <button className='btn' onClick={() => dispatch(setCurrentUser(null))}>logout</button>
       </div>
@@ -25,7 +25,7 @@ export function Users() {
         {users.map((user) => (
           <li key={user.name}>
             <button className='btn' onClick={() => dispatch(setCurrentUser(user))}>
-              <img src={user.icon} alt={user.name} />
+              <img src={`/${user.avatarURL}.png`} alt={user.name} />
               {user.name}
             </button>
           </li>

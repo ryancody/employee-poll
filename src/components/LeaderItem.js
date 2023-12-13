@@ -1,14 +1,17 @@
 import React from 'react';
-import { filterAnswered, filterMine, filterUnanswered } from '../utils/pollFilter';
-import { selectPolls } from '../features/polls/pollsSlice';
+import { filterAnswered, filterMine, filterUnanswered } from '../utils/questionFilter';
+import { selectQuestions } from '../features/questions/questionsSlice';
 import { useSelector } from 'react-redux';
 
 export function LeaderItem(props) {
   const {user, handleLogin } = props;
-  const polls = useSelector(selectPolls);
-  const myPollCount = filterMine(polls, user.name).length;
-  const myAnsweredCount = filterAnswered(polls, user.name).length;
-  const myUnansweredCount = filterUnanswered(polls, user.name).length;
+  const questions = Object.values(useSelector(selectQuestions));
+  const myPollCount = filterMine(questions, user.id).length;
+  const myAnsweredCount = filterAnswered(questions, user.id).length;
+  const myUnansweredCount = filterUnanswered(questions, user.id).length;
+
+  if(!questions)
+    throw new Error('questions is null');
 
   return (
     <div className='stats shadow'>
@@ -28,7 +31,7 @@ export function LeaderItem(props) {
             ></path>
           </svg>
         </div>
-        <div className='stat-title'>Posted Polls</div>
+        <div className='stat-title'>Posted Questions</div>
         <div className='stat-value text-primary'>{myPollCount}</div>
         {/* <div className='stat-desc'>21% more than last month</div> */}
       </div>
@@ -49,7 +52,7 @@ export function LeaderItem(props) {
             ></path>
           </svg>
         </div>
-        <div className='stat-title'>Polls Answered</div>
+        <div className='stat-title'>Questions Answered</div>
         <div className='stat-value text-secondary'>{myAnsweredCount}</div>
         {/* <div className='stat-desc'>21% more than last month</div> */}
       </div>
@@ -58,13 +61,13 @@ export function LeaderItem(props) {
         <div className='stat-figure text-secondary'>
           <div className='avatar online'>
             <div className='w-16 rounded-full'>
-              <img src={user.icon} alt={user.name} />
+              <img src={`/${user.avatarURL}.png`} alt={user.name} />
             </div>
           </div>
         </div>
         <div className='stat-value '>{user.name}</div>
-        <div className='stat-value'>{Math.round(myAnsweredCount / polls.length * 100)}%</div>
-        <div className='stat-title'>Polls Complete</div>
+        <div className='stat-value'>{Math.round(myAnsweredCount / questions.length * 100)}%</div>
+        <div className='stat-title'>Questions Complete</div>
         <div className='stat-desc text-secondary'>{myUnansweredCount} tasks remaining</div>
         {handleLogin ? <button onClick={handleLogin} className="btn btn-secondary btn-sm">Login</button> : null}
       </div>

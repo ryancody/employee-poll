@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { LeaderItem } from './LeaderItem';
-import { selectQuestions } from '../features/questions/questionsSlice';
 import { filterAnswered, filterMine } from '../utils/questionFilter';
 
 export function Leaderboard(props) {
   const users = Object.values(props.users);
-  // const users = useSelector(selectUsers);
-  const questions = useSelector(selectQuestions);
+  const questions = Object.values(props.questions);
   let usersWithCount = users?.map((user) => ({
     ...user,
     posted: filterMine(questions, user.id).length,

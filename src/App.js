@@ -21,7 +21,7 @@ function App() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const users = useSelector(selectUsers);
-  let questions = useSelector(selectQuestions);
+  const questions = useSelector(selectQuestions);
 
   useEffect(() => {
     getInitialData().then(({ users, questions }) => {
@@ -45,20 +45,20 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path='/' element={<Questions questions={questions} />} />
+        <Route path='/' element={<Questions questions={questions} currentUser={currentUser} />} />
         <Route
           path='/mine'
-          element={<Questions questions={myQuestions} />}
+          element={<Questions questions={myQuestions} currentUser={currentUser} />}
         />
         <Route
           path='/unanswered'
           element={
-            <Questions questions={unansweredQuestions} />
+            <Questions questions={unansweredQuestions} currentUser={currentUser} />
           }
         />
         <Route path='/add' element={<NewPoll />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/leaderboard' element={<Leaderboard users={users} />} />
+        <Route path='/leaderboard' element={<Leaderboard users={users} questions={questions} />} />
         <Route path='/questions/:questionId' element={<RoutedQuestion />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
